@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>canvasExample</title>
+    <meta charset='utf-8' />
+</head>
+
+<body>
+    <canvas id='example'>Обновите браузер</canvas>
+    <button onclick="Step()">CLICK ME NAHOY</button>
+    <button onclick="ToggleAutoPlay()">AutoPlay</button>
+
+    <script>
+        const cellColors = {
+            dead: "rgb(132,123,123)",
+            alive: "rgb(40,200,80)",
+            background: "black"
+        }
+
+        var example = document.getElementById("example"),
+            ctx = example.getContext('2d');
+
+        var offset = 3;
+        var size = 20;
+        var Xsize = 30;
+        var Ysize = 30;
+        var Field = new Array();
+        var timespan = 200;
+        let TimerID = null;
+        example.height = Xsize * (offset + size) + (offset);
+        example.width = Ysize * (offset + size) + (offset);
+
+        example.onclick = function (e) {
+            let x = parseInt((e.clientX - offset) / (offset + size));
+            let y = parseInt((e.clientY - offset) / (offset + size));
+
+            Field[x][y] = Field[x][y] === cellColors.alive ? cellColors.dead : cellColors.alive;
+            Render();
+        };
+
+
+        InitializeField();
+        Render();
+
+        function ToggleAutoPlay(){
+            if(TimerID===null){
+                TimerID = setInterval(Step,timespan);
+            }
+            else{
+                clearInterval(TimerID);
+                TimerID = null;
+            }
+        }
+
+        function Step() {
+            var OldField = new Array();
+            for (let x = 0; x < Xsize; x++) {
+                OldField[x] = new Array();
+                for (let y = 0; y < Xsize; y++) {
+                    OldField[x][y] = Field[x][y];
+                }
+            }
+
+            function AliveCount(x, y) {
+                var Count = 0;
+                if (y > 0 && OldField[x][y - 1] === cellColors.alive) Count++;
+                if (y < Ysize-1 && OldField[x][y + 1] === cellColors.alive) Count++;
+                if (x > 0) {
+                    if (OldField[x - 1][y] === cellColors.alive) Count++;
+                    if (y > 0 && OldField[x - 1][y - 1] === cellColors.alive) Count++;
+                    if (y < Ysize-1 && OldField[x - 1][y + 1] === cellColors.alive) Count++;
+                }
+                if (x < Xsize-1) {
+                    if (OldField[x + 1][y] === cellColors.alive) Count++;
+                    if (y > 0 && OldField[x + 1][y - 1] === cellColors.alive) Count++;
+                    if (y < Ysize-1 && OldField[x + 1][y + 1] === cellColors.alive) Count++;
+                }
+                return Count;
+            }
+
+            for (let x = 0; x < Xsize; x++) {
+                for (let y = 0; y < Xsize; y++) {
+                    var alive = AliveCount(x, y);
+                    if (alive === 2) {
+                        Field[x][y] = OldField[x][y];
+                    } else if (alive === 3) {
+                        Field[x][y] = cellColors.alive;
+                    } else {
+                        Field[x][y] = cellColors.dead;
+                    }
+                }
+            }
+            Render();
+        }
+
+        function InitializeField() {
+            for (let x = 0; x < Xsize; x++) {
+                Field[x] = new Array();
+                for (let y = 0; y < Xsize; y++) {
+                    Field[x][y] = cellColors.dead;
+                }
+            }
+        }
+
+        function Render() {
+            ctx.fillStyle = cellColors.background;
+            ctx.fillRect(0, 0, example.width, example.height);
+            for (let x = 0; x < Xsize; x++) {
+                for (let y = 0; y < Xsize; y++) {
+                    ctx.fillStyle = Field[x][y];
+                    var xCoord = offset + x * (offset + size);
+                    var yCoord = offset + y * (offset + size);
+                    ctx.fillRect(xCoord, yCoord, size, size);
+                }
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,336 @@
+<html>
+
+<head>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        .offcanvas-header {
+            display: none;
+        }
+
+        .screen-overlay {
+            height: 100%;
+            z-index: 30;
+            position: fixed;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            background-color: rgba(34, 34, 34, 0.6);
+            transition: opacity .2s linear, visibility .1s, width 1s ease-in;
+        }
+
+        .screen-overlay.show {
+            transition: opacity .5s ease, width 0s;
+            opacity: 1;
+            width: 100%;
+            visibility: visible;
+        }
+
+        @media all and (max-width:992px) {
+
+            .offcanvas-header {
+                display: block;
+            }
+
+            .mobile-offcanvas {
+                visibility: hidden;
+                transform: translateX(-100%);
+                border-radius: 0;
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                z-index: 1200;
+                width: 80%;
+                overflow-y: scroll;
+                overflow-x: hidden;
+                transition: visibility .2s ease-in-out, transform .2s ease-in-out;
+            }
+
+            .mobile-offcanvas.show {
+                visibility: visible;
+                transform: translateX(0);
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        const example =
+            "<div class=\"media border p-3\"><img src=\"#AVATAR#\" alt=\"ava\" class=\"mr-3 mt-3 rounded-circle\" style=\"width:60px;\"><div class=\"media-body\"><h4>Posted on #NAME#<small><i>#DATA#</i></small></h4><p>#TEXT#</p><button class = \"btn btn-outline-danger\" onclick=\"RemoveComment(this)\">Remove Comment</button></div></div>"
+
+        function CreateComment() {
+            let name = NameInput.value;
+            let container = ContainerInput.value;
+            var newComment = example;
+            newComment = newComment.replace("#NAME#", name + " ");
+            newComment = newComment.replace("#TEXT#", container);
+            newComment = newComment.replace("#DATA#", new Date().toDateString());
+            let path = $('.active').last().children("").attr("src");
+            newComment = newComment.replace("#AVATAR#", path);
+            document.getElementById("CommentBox").innerHTML += newComment;
+        }
+
+        function Validate() {
+            var button = $("#PostButton");
+            var IsInValid = NameInput.value == "" || ContainerInput.value == "" || EmailInput == "";
+
+            button.removeClass(IsInValid ? "btn-outline-warning" : "btn-outline-warning");
+            button.addClass(IsInValid ? "btn-outline-warning" : "btn-outline-success");
+
+            PostButton.onclick = IsInValid ? null : CreateComment;
+        }
+
+        function BuyDuck(x) {
+            document.getElementById("DuckName").textContent = "К покупке: " + x.parentElement.children[1].textContent
+        }
+
+        function RemoveComment(x) {
+            x.parentElement.parentElement.remove();
+        }
+    </script>
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">KaSHOp</a>
+  
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Утошки</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Контакты</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">О нас</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/Boss.png" alt="Card image" style="width:100%">
+                <h4 class="card-title">Утка-босс</h4>
+                <p class="card-text" style="height: 90">Ты просишь принять со мной ванную, но ты делаешь это без
+                    уважения</p>
+                <button type="button" class="btn btn-info btn-lg " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/BodyBuilder.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">Утка-качек</h4>
+                <p class="card-text" style="height: 90">Сдай реферат по ФП, будешь таким же</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/robber.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">Утка-вор</h4>
+                <p class="card-text" style="height: 90">Украдет твое сердечко, а потом твою стипендию</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/Invalid.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">Уточка-инвалид</h4>
+                <p class="card-text" style="height: 90">А не надо было на ИПСУ поступать, уточка</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/allah.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">Уточка-араб</h4>
+                <p class="card-text" style="height: 90">Тебя ожидает настоящий взрыв эмоций!</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/Pony.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">Утка-"А" по вышке</h4>
+                <p class="card-text" style="height: 90">Существует только в сказках и твоих мечтах</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/Mankey.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">Утка-обезьяна</h4>
+                <p class="card-text" style="height: 90">Похожа на твоего бывшего</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/Omon.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">ОМОН-утка</h4>
+                <p class="card-text" style="height: 90">Для разрешения внутренних конфликтов</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/Pank-2.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">Утка-панк</h4>
+                <p class="card-text" style="height: 90">Не совсем кибер, но уже панк</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/Batman.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">Бет-утка</h4>
+                <p class="card-text" style="height: 90">Черная, как Catboy Kami на стримах</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+        <div class="card" style="margin: 5%;">
+            <div class="card-body">
+                <img class="card-img-top" src="Ducks/Knight.jpg" alt="Card image" style="width:100%">
+                <h4 class="card-title">Рыцарь-утка</h4>
+                <p class="card-text" style="height: 90">В поисках твоего сердечка и святого Грааля</p>
+                <button type="button" class="btn btn-info btn-lg  " data-toggle="modal" data-target="#myModal"
+                    onclick="BuyDuck(this)">Купить</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="DuckName">Купить уточку</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="usr">Ваше имя:</label>
+                        <input type="text" class="form-control" id="usr">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Ваш номер телефона:</label>
+                        <input type="password" class="form-control" id="pwd">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Подтвердить</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="container-fluid" style="background-color: mistyrose">
+        <h2 class="text-center">Оставьте свой отзыв!</h2>
+        <div class="row">
+            <div class="col-sm-2">
+                <div id="demo" class="carousel slide" data-ride="carousel">
+                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <div class="carousel-inner" style="text-align-last: center">
+                        <div class="carousel-item active">
+                            <img src="Avatars/ava-blue.png" alt="avatar">
+                        </div>
+                        <div class="carousel-item ">
+                            <img src="Avatars/ava-cyan.png" alt="avatar">
+                        </div>
+                        <div class="carousel-item ">
+                            <img src="Avatars/ava-darkblue.png" alt="avatar">
+                        </div>
+                        <div class="carousel-item ">
+                            <img src="Avatars/ava-green.png" alt="avatar">
+                        </div>
+                        <div class="carousel-item ">
+                            <img src="Avatars/ava-lime.png" alt="avatar">
+                        </div>
+                        <div class="carousel-item ">
+                            <img src="Avatars/ava-orange.png" alt="avatar">
+                        </div>
+                        <div class="carousel-item ">
+                            <img src="Avatars/ava-pink.png" alt="avatar">
+                        </div>
+                        <div class="carousel-item ">
+                            <img src="Avatars/ava-red.png" alt="avatar">
+                        </div>
+                        <div class="carousel-item ">
+                            <img src="Avatars/ava-violet.png" alt="avatar">
+                        </div>
+                    </div>
+                    <a class="carousel-control-next" href="#demo" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <input class="form-control" id="NameInput" name="name" placeholder="Имя" type="text" required>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <input class="form-control" id="EmailInput" name="email" placeholder="Почта" type="email"
+                            required>
+                    </div>
+                </div>
+                <textarea class="form-control" id="ContainerInput" name="comments" placeholder="Комментарий"
+                    rows="5"></textarea><br>
+                <div class="row">
+                    <div class="col-sm-12 form-group">
+                        <button class="btn btn-outline-success pull-right" id="PostButton" type="submit"
+                            onclick="CreateComment();">Отправить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <p>Наши контакты для обратной связи, остерегайтесь подделок!</p>
+                <p><span class="glyphicon glyphicon-phone"></span> +380 66-427-30-08</p>
+                <p><span class="glyphicon glyphicon-envelope"></span> KaShop@mail.wtf</p>
+            </div>
+        </div>
+        <div id="CommentBox"></div>
+    </div>
+
+</body>
